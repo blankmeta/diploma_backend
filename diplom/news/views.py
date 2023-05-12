@@ -39,3 +39,9 @@ class NewViewSet(CreateModelMixin,
             except FavouriteNews.DoesNotExist:
                 return Response(data="You don't have this new in favourites",
                                 status=status.HTTP_400_BAD_REQUEST)
+
+    @action(['get'], detail=False)
+    def favourited(self, request, *args, **kwargs):
+        queryset = New.objects.filter(favourited__user=request.user)
+        data = self.serializer_class(queryset, many=True).data
+        return Response(data=data, status=status.HTTP_200_OK)
