@@ -19,6 +19,9 @@ LOCAL = True
 
 ALLOWED_HOSTS = ['*']
 
+CSRF_TRUSTED_ORIGINS = ['http://*.127.0.0.1',
+                        'http://localhost']
+
 
 # Application definition
 INSTALLED_APPS = [
@@ -157,12 +160,26 @@ SIMPLE_JWT = {
 }
 
 DJOSER = {
-    'LOGIN_FIELD': 'username',
-    # 'SERIALIZERS': {
-    #     'user_create': 'users.serializers.UserSerializer',
-    # },
+    'LOGIN_FIELD': 'email',
+    'SERIALIZERS': {
+        'user_create': 'users.serializers.UserSerializer',
+    },
     'PERMISSIONS': {
         'user': ['rest_framework.permissions.IsAuthenticatedOrReadOnly'],
         'user_list': ['rest_framework.permissions.IsAuthenticatedOrReadOnly'],
-    }
+    },
+    'ACTIVATION_URL': '#/activate/{uid}/{token}',
+    'SEND_ACTIVATION_EMAIL': True,
 }
+
+SITE_NAME = "Yoshkar-Ola-guide"
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'yocityguide@gmail.com'
+EMAIL_HOST_PASSWORD = 'uhxwdlppvtfgyjak'
+
+CELERY_BROKER_URL = "redis://127.0.0.1:6379/0"
+CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379/0"
