@@ -15,7 +15,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', default='SECRET')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', default=True)
 
-LOCAL = True
+LOCAL = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -181,5 +181,8 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'yocityguide@gmail.com'
 EMAIL_HOST_PASSWORD = 'uhxwdlppvtfgyjak'
 
-CELERY_BROKER_URL = "redis://127.0.0.1:6379/0"
-CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379/0"
+# CELERY_BROKER_URL = "redis://127.0.0.1:6379/0"
+# CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379/0"
+
+CELERY_BROKER_URL = 'redis://:mypass@redis:6379/0'
+CELERY_RESULT_BACKEND = 'redis://:mypass@redis:6379/0'

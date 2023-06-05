@@ -9,6 +9,32 @@ services:
     env_file:
       - ./.env
 
+  redis:
+    image: redis:6.2-alpine
+
+    restart: always
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning --requirepass mypass
+    volumes:
+      - cache:/data
+
+  celery:
+    build: ../diplom
+    env_file:
+      - ./.env
+    command: celery -A diplom worker -l INFO
+    depends_on:
+      - redis
+
+  flower:
+    image: mher/flower:0.9.7
+    command: [ 'flower', '--broker=redis://:mypass@redis:6379/0', '--port=5555' ]
+    ports:
+      - 5557:5555
+    depends_on:
+      - redis
+
   web:
     build: ../diplom
     restart: always
@@ -22,20 +48,7 @@ services:
     command: >
       bash -c "python manage.py migrate &&
       python manage.py collectstatic --noinput &&
-      gunicorn --bind 0:8000 diplom.wsgi" &&
-      celery -A diplom worker -l INFO
-
-  redis:
-    image: redis:6.2-alpine
-
-    restart: always
-    ports:
-      - '6379:6379'
-    command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
-    volumes:
-      - cache:/data
-    depends_on:
-      - web
+      gunicorn --bind 0:8000 diplom.wsgi"
 
   nginx:
     image: nginx:1.21.3-alpine

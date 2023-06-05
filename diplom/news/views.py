@@ -1,3 +1,5 @@
+from datetime import timedelta, datetime
+
 from django.db import IntegrityError
 from rest_framework import status
 from rest_framework.decorators import action
@@ -7,6 +9,7 @@ from rest_framework.mixins import (CreateModelMixin, RetrieveModelMixin,
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
+from diplom.tasks import soon_event_email
 from news.models import New, FavouriteNews
 from news.serializers import NewSerializer, FavouriteNewsSerializer
 
@@ -26,6 +29,9 @@ class NewViewSet(CreateModelMixin,
             try:
                 obj = FavouriteNews.objects.create(new=self.get_object(),
                                                    user=request.user)
+                soon_event_email.apply_async(
+                    (self.request.user.id, 123),
+                    eta=datetime.now() + timedelta(minutes=1))
             except IntegrityError as e:
                 return Response(data='You already has this new in favourites',
                                 status=status.HTTP_400_BAD_REQUEST)

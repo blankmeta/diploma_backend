@@ -14,7 +14,7 @@ from diplom import settings
 # set the default Django settings module for the 'celery' app.
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'diplom.settings')
 
-app = Celery("clr")
+app = Celery('clr', broker='redis://localhost')
 
 # read config from Django settings, the CELERY namespace would make celery
 # config keys has `CELERY` prefix
