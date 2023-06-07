@@ -9,7 +9,7 @@ class New(models.Model):
     title = models.CharField(max_length=128)
     text = models.CharField(max_length=2048)
     image = models.ImageField(null=True, upload_to='news/images/')
-    author = models.ForeignKey('users.User', on_delete=models.SET_NULL,
+    author = models.ForeignKey(User, on_delete=models.SET_NULL,
                                null=True)
     created = models.DateTimeField(auto_now_add=True)
 

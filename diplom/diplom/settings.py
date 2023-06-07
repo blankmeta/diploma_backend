@@ -2,18 +2,21 @@ import os
 from datetime import timedelta
 from pathlib import Path
 
+from dotenv import load_dotenv
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+load_dotenv()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY', default='SECRET')
+SECRET_KEY = os.getenv('SECRET_KEY', default='123')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG', default=True)
+DEBUG = True
 
 LOCAL = False
 
@@ -21,7 +24,6 @@ ALLOWED_HOSTS = ['*']
 
 CSRF_TRUSTED_ORIGINS = ['http://*.127.0.0.1',
                         'http://localhost']
-
 
 # Application definition
 INSTALLED_APPS = [
@@ -41,9 +43,8 @@ INSTALLED_APPS = [
     'docs',
     'users',
     'news',
-    # 'events',
+    'events',
 ]
-
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -57,7 +58,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'diplom.urls'
 
-AUTH_USER_MODEL = 'users.User'
+# AUTH_USER_MODEL = 'users.User'
 
 TEMPLATES = [
     {
@@ -77,7 +78,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'diplom.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
@@ -95,7 +95,6 @@ DATABASES = {
         'PORT': os.getenv('DB_PORT', default='5432')
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -115,7 +114,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
@@ -126,7 +124,6 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
@@ -149,7 +146,7 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticatedOrReadOnly',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
     ],
 }
 
@@ -179,7 +176,8 @@ EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'yocityguide@gmail.com'
-EMAIL_HOST_PASSWORD = 'uhxwdlppvtfgyjak'
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+DOMAIN = os.getenv('FRONTEND_DOMAIN', default='localhost:3456')
 
 # CELERY_BROKER_URL = "redis://127.0.0.1:6379/0"
 # CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379/0"
