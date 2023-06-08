@@ -10,11 +10,8 @@ class TestUsers:
     def test_register_user(self, client):
         """Пользователь может зарегистрироваться."""
         data = {
-            'username': 'test_username',
             'password': 'test_password',
             'email': 'test_email@gmail.com',
-            'first_name': 'test_first_name',
-            'last_name': 'test_last_name'
         }
         response = client.post(self.AUTH_PREFIX + 'users/', data=data)
 

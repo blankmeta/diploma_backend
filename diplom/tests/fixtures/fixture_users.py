@@ -2,13 +2,14 @@ import pytest
 
 USER_USERNAME = 'TestUser'
 USER_PASSWORD = '12345678'
+USER_EMAIL = 'dodik@gmail.com'
 
 
 @pytest.fixture
 def user(django_user_model):
     return django_user_model.objects.create_user(username=USER_USERNAME,
                                                  password=USER_PASSWORD,
-                                                 email='test@gmail.com')
+                                                 email=USER_EMAIL)
 
 
 @pytest.fixture
@@ -24,14 +25,14 @@ def user_client(user):
 
     client = APIClient()
 
-    token_response = client.post('/api/v1/auth/jwt/create/', data={
-        "username": USER_USERNAME,
+    token_response = client.post('/api/v1/auth/token/login/', data={
+        "email": USER_EMAIL,
         "password": USER_PASSWORD
     })
 
     # print(token_response.json())
 
-    token = token_response.json()['access']
+    token = token_response.json()['auth_token']
 
-    client.credentials(HTTP_AUTHORIZATION=f'Bearer {token}')
+    client.credentials(HTTP_AUTHORIZATION=f'Token {token}')
     return client

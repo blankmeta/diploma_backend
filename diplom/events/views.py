@@ -5,12 +5,15 @@ from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.mixins import ListModelMixin, DestroyModelMixin, \
     UpdateModelMixin, RetrieveModelMixin, CreateModelMixin
+from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
+from diplom.permissions import IsAdminUserOrReadOnly
 from diplom.tasks import soon_event_email
-from events.models import Event, FavouriteEvents
-from events.serializers import EventSerializer, FavouriteEventsSerializer
+from events.models import Event, FavouriteEvents, Category
+from events.serializers import EventSerializer, FavouriteEventsSerializer, \
+    CategorySerializer
 
 
 class EventViewSet(CreateModelMixin,
@@ -52,3 +55,14 @@ class EventViewSet(CreateModelMixin,
         queryset = Event.objects.filter(favourited__user=request.user)
         data = self.serializer_class(queryset, many=True).data
         return Response(data=data, status=status.HTTP_200_OK)
+
+
+class CategoryViewSet(CreateModelMixin,
+                      RetrieveModelMixin,
+                      UpdateModelMixin,
+                      DestroyModelMixin,
+                      ListModelMixin,
+                      GenericViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+    permission_classes = (IsAdminUserOrReadOnly,)

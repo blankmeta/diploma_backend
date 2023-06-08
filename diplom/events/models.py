@@ -7,6 +7,15 @@ from django.db import models
 User = get_user_model()
 
 
+class Category(models.Model):
+    name = models.CharField(max_length=32)
+    icon = models.ImageField(null=True, upload_to='events/categories/')
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
+
+
 class Event(models.Model):
     title = models.CharField(max_length=1024)
     description = models.CharField(max_length=5096, null=True)
@@ -14,6 +23,8 @@ class Event(models.Model):
     geo_lat = models.FloatField(null=True)
     geo_lon = models.FloatField(null=True)
     image = models.ImageField(null=True, upload_to='events/images/')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE,
+                                 related_name='events', null=True)
     time = models.DateTimeField()
     author = models.ForeignKey(User, on_delete=models.SET_NULL,
                                null=True)

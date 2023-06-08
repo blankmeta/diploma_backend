@@ -1,14 +1,14 @@
 import pytest
 
-TAGS_COUNT = 3
-
 
 @pytest.fixture
-def create_three_tags(user):
-    from recipes.models import Tag
+def create_categories(user):
+    from events.models import Category
 
-    for i in range(TAGS_COUNT):
-        Tag.objects.create(
-            name=f'tag_num_{i}',
-            color='#123456'
-        )
+    names = ['Психбольницы', 'Театры', 'Еда', 'Другое']
+    categories = []
+
+    for name in names:
+        categories.append(Category(name=name))
+
+    Category.objects.bulk_create(categories)
