@@ -16,7 +16,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Category
-        fields = ('name', 'icon')
+        fields = ('pk', 'name', 'icon')
 
 
 class EventSerializer(serializers.ModelSerializer):
