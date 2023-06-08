@@ -33,7 +33,7 @@ class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
         fields = ('pk', 'title', 'description', 'address', 'image', 'author',
-                  'created', 'geo_lat', 'geo_lon', 'time')
+                  'created', 'geo_lat', 'geo_lon', 'time', 'category')
         read_only_fields = ('created', 'author', 'geo_lat', 'geo_lon')
 
 

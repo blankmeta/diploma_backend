@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 
 from django.db import IntegrityError
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.mixins import ListModelMixin, DestroyModelMixin, \
@@ -24,6 +25,8 @@ class EventViewSet(CreateModelMixin,
                    GenericViewSet):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
+    filter_backends = (DjangoFilterBackend,)
+    filterset_fields = ('category',)
 
     @action(['post', 'delete'], detail=True)
     def favourite(self, request, *args, **kwargs):
