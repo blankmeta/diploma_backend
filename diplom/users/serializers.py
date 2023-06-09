@@ -28,3 +28,9 @@ class UserSerializer(serializers.ModelSerializer):
             'email', 'id', 'password',)
         model = User
         ref_name = 'CustomUserSerializer'
+
+
+class UserRetrieveSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = '__all__'
+        model = User
