@@ -184,3 +184,5 @@ DOMAIN = os.getenv('FRONTEND_DOMAIN', default='localhost:3456')
 
 CELERY_BROKER_URL = 'redis://:mypass@redis:6379/0'
 CELERY_RESULT_BACKEND = 'redis://:mypass@redis:6379/0'
+
+# 123
