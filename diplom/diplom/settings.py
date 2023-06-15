@@ -151,7 +151,6 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    # Устанавливаем срок жизни токена
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
@@ -179,9 +178,6 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'yocityguide@gmail.com'
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 DOMAIN = os.getenv('FRONTEND_DOMAIN', default='localhost:3456')
-
-# CELERY_BROKER_URL = "redis://127.0.0.1:6379/0"
-# CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379/0"
 
 CELERY_BROKER_URL = 'redis://:mypass@redis:6379/0'
 CELERY_RESULT_BACKEND = 'redis://:mypass@redis:6379/0'
